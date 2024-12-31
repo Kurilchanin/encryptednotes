@@ -1,0 +1,120 @@
+export default {
+  async fetch(request, env) {
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    };
+
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    const url = new URL(request.url);
+
+    try {
+      // Создание записки
+      if (request.method === 'POST' && url.pathname === '/create') {
+        const { text, id } = await request.json();
+        
+        if (!text || !id) {
+          return new Response(JSON.stringify({ error: 'Missing required fields' }), { 
+            status: 400, 
+            headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+          });
+        }
+
+        await env.EncryptedNotes.put(id, JSON.stringify({ text }), { expirationTtl: 86400 });
+        
+        return new Response(JSON.stringify({ success: true, id }), { 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        });
+      }
+
+      // Чтение записки
+      if (request.method === 'GET' && url.pathname === '/read') {
+        const id = url.searchParams.get('note');
+
+        if (!id) {
+          return new Response(JSON.stringify({ error: 'Invalid note ID' }), { 
+            status: 400, 
+            headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+          });
+        }
+
+        const data = await env.EncryptedNotes.get(id);
+        
+        if (!data) {
+          return new Response(JSON.stringify({ error: 'Note not found or already read' }), { 
+            status: 404, 
+            headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+          });
+        }
+
+        const { text } = JSON.parse(data);
+        await env.EncryptedNotes.delete(id);
+        
+        return new Response(JSON.stringify({ text }), { 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        });
+      }
+
+      return new Response(JSON.stringify({ error: 'Not found' }), { 
+        status: 404, 
+        headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+      });
+
+    } catch (error) {
+      return new Response(JSON.stringify({ error: 'Internal server error' }), { 
+        status: 500, 
+        headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+      });
+    }
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+Чтобы изменить срок хранения с 2 на 30 дней, нужно:
+
+1. Подключиться как postgres:
+```bash
+sudo -u postgres psql -d encryptednotes
+```
+
+
+2. Сначала удалить текущее расписание:
+```sql
+SELECT cron.unschedule(job_id);  -- где job_id это ID задачи из SELECT * FROM cron.job;
+```
+
+
+3. Создать новое с 30 днями:
+```sql
+SELECT cron.schedule('0 0 * * *', $$DELETE FROM notes WHERE created_at < NOW() - INTERVAL '30 days'$$);
+```
+
+
+4. Проверить:
+```sql
+SELECT * FROM cron.job;
+```
+
+
+Или можно просто обновить существующую задачу:
+```sql
+UPDATE cron.job SET command = $$DELETE FROM notes WHERE created_at < NOW() - INTERVAL '30 days'$$ WHERE jobname = 'schedule';
+```
+
+
+Какой вариант предпочтительнее?

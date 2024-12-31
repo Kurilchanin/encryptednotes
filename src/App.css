@@ -1,0 +1,144 @@
+.note-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.note-input {
+  width: 100%;
+  min-height: 200px;
+  padding: 15px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #2b2b2b;
+  color: #fff;
+  resize: vertical;
+  font-size: 16px;
+}
+
+.button {
+  padding: 15px 25px;
+  border-radius: 8px;
+  border: none;
+  background: #2ecc71;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+  margin: 0 10px;
+  position: relative;
+  top: 0;
+}
+
+.button:hover {
+  background: #27ae60;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.4);
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(46, 204, 113, 0.2);
+  background: #219a52;
+}
+
+.button:disabled {
+  background: #1f8b4c;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-message {
+  color: #ff4444;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+}
+
+.success-message {
+  color: #2ecc71;
+  text-align: center;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.view-note {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.note-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #2b2b2b;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+}
+
+.char-counter {
+  text-align: right;
+  color: #888;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.char-counter.near-limit {
+  color: #f39c12;
+}
+
+.char-counter.at-limit {
+  color: #e74c3c;
+}
+
+.share-button {
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.share-button svg {
+  transition: transform 0.2s;
+}
+
+.share-button:hover svg {
+  transform: scale(1.1);
+}
+
+.share-button:active svg {
+  transform: scale(0.9);
+}
