@@ -74,7 +74,10 @@ function ViewNote() {
           </button>
           <button 
             className="button share-button" 
-            onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}`, '_blank')}
+            onClick={() => {
+                const message = encodeURIComponent(noteText);
+                window.open(`https://t.me/share/url?url=${message}`, '_blank');
+            }}
           >
             <FaShareAlt /> Share
           </button>

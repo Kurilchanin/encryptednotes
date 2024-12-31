@@ -1,1 +1,1 @@
-export const API_URL = 'https://onedollarvpn.online:8082'
+export const API_URL = 'https://onedollarvpn.online:8082';

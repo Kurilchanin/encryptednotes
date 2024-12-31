@@ -56,7 +56,7 @@ function CreateNote() {
       console.log('Create response:', data);
       
       if (data.success) {
-        const noteLink = `${window.location.origin}?note=${noteId}_${encryptionKey}`;
+        const noteLink = `https://encryptednotes.ton?note=${noteId}_${encryptionKey}`;
         console.log('Generated link:', noteLink);
         setNoteLink(noteLink);
         setNoteText('');
