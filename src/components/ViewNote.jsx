@@ -4,34 +4,29 @@ import { API_URL } from '../config';
 import DOMPurify from 'dompurify';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
 
-function ViewNote() {
+function ViewNote({ noteId, encryptionKey }) {
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Извлекаем параметры из URL после знака ?
-  const urlParams = new URLSearchParams(window.location.search);
-  const fullParam = urlParams.get('note'); // Изменено с 'id' на 'note'
-  const [id, key] = fullParam ? fullParam.split('_') : [];
-
   useEffect(() => {
     const fetchNote = async () => {
-      if (!id) {
+      if (!noteId) {
         setNoteText('Invalid note ID.');
         setIsLoading(false);
         return;
       }
 
       try {
-        console.log('Fetching note with ID:', id);
-        const response = await fetch(`${API_URL}/read?note=${id}`); // Изменено с 'id' на 'note'
+        console.log('Fetching note with ID:', noteId);
+        const response = await fetch(`${API_URL}/read?note=${noteId}`);
         const data = await response.json();
         console.log('Response:', data);
 
         if (data.error) {
           setNoteText(data.error);
-        } else if (key) {
+        } else if (encryptionKey) {
           try {
-            const decryptedText = decryptText(data.text, key);
+            const decryptedText = decryptText(data.text, encryptionKey);
             setNoteText(DOMPurify.sanitize(decryptedText));
           } catch (error) {
             setNoteText('Error decrypting note.');
@@ -46,7 +41,7 @@ function ViewNote() {
     };
 
     fetchNote();
-  }, [id, key]);
+  }, [noteId, encryptionKey]);
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(noteText);

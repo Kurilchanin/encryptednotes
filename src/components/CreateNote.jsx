@@ -13,10 +13,6 @@ function CreateNote() {
   const [isLoading, setIsLoading] = useState(false)
   const [noteLink, setNoteLink] = useState('')
 
-  const copyToClipboard = async (text) => {
-    await navigator.clipboard.writeText(text)
-  }
-
   const handleTextChange = (e) => {
     const text = e.target.value;
     
@@ -30,6 +26,7 @@ function CreateNote() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
+    console.log('Creating note with text:', noteText);
 
     try {
       const noteId = uuidv4();
@@ -38,8 +35,6 @@ function CreateNote() {
         DOMPurify.sanitize(noteText), 
         encryptionKey
       ).toString()
-
-      console.log('Creating note with ID:', noteId);
 
       const response = await fetch(`${API_URL}/create`, {
         method: 'POST',
@@ -53,20 +48,24 @@ function CreateNote() {
       })
 
       const data = await response.json()
-      console.log('Create response:', data);
-      
+      console.log('Response from API:', data);
+
       if (data.success) {
-        const noteLink = `https://encryptednotes.ton?note=${noteId}_${encryptionKey}`;
-        console.log('Generated link:', noteLink);
-        setNoteLink(noteLink);
+        const generatedLink = `https://t.me/EncryptedNotesBot/app?note=${noteId}_${encryptionKey}`;
+        setNoteLink(generatedLink);
+        console.log('Generated link:', generatedLink);
         setNoteText('');
       }
     } catch (error) {
-      console.error('Failed to create note:', error)
+      console.error('Failed to create note:', error);
     } finally {
       setIsLoading(false)
     }
   }
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(noteLink);
+  };
 
   return (
     <div>
@@ -97,13 +96,13 @@ function CreateNote() {
         <div className="button-group">
           <button 
             className="button share-button" 
-            onClick={() => copyToClipboard(noteLink)}
+            onClick={copyToClipboard}
           >
             <FaClipboard /> Copy
           </button>
           <button 
             className="button share-button" 
-            onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(noteLink)}`, '_blank')}
+            onClick={() => window.open(noteLink, '_blank')}
           >
             <FaShareAlt /> Share
           </button>
