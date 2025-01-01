@@ -12,22 +12,23 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     const noteParam = params.get('note');
 
-    console.log('URL Parameters:', window.location.search);
+    console.log('URL Parameters:', noteParam);
 
     if (noteParam) {
-      console.log('Note parameter found:', noteParam);
       const [id, key] = noteParam.split('_');
-      setNoteId(id);
-      setEncryptionKey(key);
-      setHasUrlParams(true);
-      console.log('Extracted ID:', id, 'Extracted Key:', key);
+      console.log('Extracted ID:', id, 'Key:', key);
+
+      if (id && key) {
+        setNoteId(id);
+        setEncryptionKey(key);
+        setHasUrlParams(true);
+      } else {
+        setHasUrlParams(false);
+      }
     } else {
-      console.log('No note parameter found.');
       setHasUrlParams(false);
     }
   }, []);
-
-  console.log('Has URL Params:', hasUrlParams);
 
   return (
     <div className="app">

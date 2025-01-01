@@ -94,7 +94,7 @@ function CreateNote() {
           <button 
             className="button share-button" 
             onClick={() => {
-              const copyLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
+              const copyLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}&image=note.svg`;
               navigator.clipboard.writeText(copyLink);
             }}
           >
@@ -103,7 +103,7 @@ function CreateNote() {
           <button 
             className="button share-button" 
             onClick={() => {
-              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
+              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}&image=note.svg`;
               window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
             }}
           >
