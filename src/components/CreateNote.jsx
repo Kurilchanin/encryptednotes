@@ -26,7 +26,6 @@ function CreateNote() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
-    console.log('Creating note with text:', noteText);
 
     try {
       const noteId = uuidv4();
@@ -48,12 +47,10 @@ function CreateNote() {
       })
 
       const data = await response.json()
-      console.log('Response from API:', data);
-
+      
       if (data.success) {
-        const generatedLink = `https://t.me/EncryptedNotesBot/app?note=${noteId}_${encryptionKey}`;
+        const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
         setNoteLink(generatedLink);
-        console.log('Generated link:', generatedLink);
         setNoteText('');
       }
     } catch (error) {
@@ -96,13 +93,19 @@ function CreateNote() {
         <div className="button-group">
           <button 
             className="button share-button" 
-            onClick={copyToClipboard}
+            onClick={() => {
+              const copyLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
+              navigator.clipboard.writeText(copyLink);
+            }}
           >
             <FaClipboard /> Copy
           </button>
           <button 
             className="button share-button" 
-            onClick={() => window.open(noteLink, '_blank')}
+            onClick={() => {
+              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
+              window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
+            }}
           >
             <FaShareAlt /> Share
           </button>
