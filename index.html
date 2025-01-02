@@ -16,12 +16,6 @@
               style-src 'self'; 
               img-src 'self' data: https:;
               connect-src 'self' https:;">
-    
-    <script>
-      if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-        location.replace(`https:${location.href.substring(location.protocol.length)}`);
-      }
-    </script>
   </head>
   <body>
     <div id="root"></div>
