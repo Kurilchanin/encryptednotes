@@ -66,7 +66,7 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
         </button>
       </div>
       <button 
-        className="button create-button" 
+        className="button" 
         onClick={onCreateNewNote}
       >
         Create New Note
