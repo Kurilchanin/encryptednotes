@@ -3,21 +3,22 @@ import { decryptText } from '../utils/crypto';
 import { API_URL } from '../config';
 import DOMPurify from 'dompurify';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
+import CreateNoteComponent from './CreateNote';
 
 function ViewNote({ noteId, encryptionKey }) {
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [warning, setWarning] = useState('');
+  const [showCreateNote, setShowCreateNote] = useState(false);
 
   const fetchNote = useCallback(async () => {
     setIsLoading(true);
-    setWarning(''); // Сброс предупреждения перед новым запросом
+    setWarning('');
 
     try {
       const response = await fetch(`${API_URL}/read?note=${noteId}`);
 
       if (response.status === 404) {
-        // Если заметка не найдена, устанавливаем предупреждение
         setWarning('Note not found or already read');
       } else if (response.ok) {
         const data = await response.json();
@@ -47,13 +48,19 @@ function ViewNote({ noteId, encryptionKey }) {
 
   return (
     <div className="view-note">
-      {warning && <h2 className="warning">{warning}</h2>} {/* Показываем только предупреждение */}
+      {warning && <h2 className="warning">{warning}</h2>}
       {!warning && <h2 className="secure-note">Secure Note</h2>}
       <div className={`note-content ${warning ? 'error-message' : ''}`}>
-        {warning ? '' : noteText} {/* Если есть предупреждение, не показываем текст заметки */}
+        {warning ? '' : noteText}
       </div>
       {!warning && (
         <div className="button-group">
+          <button 
+            className="button create-button" 
+            onClick={() => setShowCreateNote(true)}
+          >
+            Create New Note
+          </button>
           <button className="button share-button" onClick={copyToClipboard}>
             <FaClipboard /> Copy
           </button>
@@ -68,6 +75,7 @@ function ViewNote({ noteId, encryptionKey }) {
           </button>
         </div>
       )}
+      {showCreateNote && <CreateNoteComponent onClose={() => setShowCreateNote(false)} />}
     </div>
   );
 }
