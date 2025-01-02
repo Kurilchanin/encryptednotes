@@ -51,28 +51,26 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
       <div className={`note-content ${warning ? 'error-message' : ''}`}>
         {warning ? '' : noteText}
       </div>
-      {!warning && (
-        <div className="button-group">
-          <button className="button share-button" onClick={copyToClipboard}>
-            <FaClipboard /> Copy
-          </button>
-          <button 
-            className="button share-button" 
-            onClick={() => {
-              const message = encodeURIComponent(noteText);
-              window.open(`https://t.me/share/url?url=${message}`, '_blank');
-            }}
-          >
-            <FaShareAlt /> Share
-          </button>
-          <button 
-            className="button create-button" 
-            onClick={onCreateNewNote}
-          >
-            Create New Note
-          </button>
-        </div>
-      )}
+      <div className="button-group">
+        <button className="button share-button" onClick={copyToClipboard}>
+          <FaClipboard /> Copy
+        </button>
+        <button 
+          className="button share-button" 
+          onClick={() => {
+            const message = encodeURIComponent(noteText);
+            window.open(`https://t.me/share/url?url=${message}`, '_blank');
+          }}
+        >
+          <FaShareAlt /> Share
+        </button>
+      </div>
+      <button 
+        className="button create-button" 
+        onClick={onCreateNewNote}
+      >
+        Create New Note
+      </button>
     </div>
   );
 }
