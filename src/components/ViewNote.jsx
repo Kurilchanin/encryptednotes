@@ -7,28 +7,25 @@ import { FaClipboard, FaShareAlt } from 'react-icons/fa';
 function ViewNote({ noteId, encryptionKey }) {
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [warning, setWarning] = useState('');
 
   const fetchNote = useCallback(async () => {
-    if (!noteId) {
-      setNoteText('Invalid note ID.');
-      setIsLoading(false);
-      return;
-    }
+    setIsLoading(true);
+    setWarning(''); // Сброс предупреждения перед новым запросом
 
     try {
       const response = await fetch(`${API_URL}/read?note=${noteId}`);
-      const data = await response.json();
 
-      if (data.error) {
-        setNoteText(data.error);
-      } else if (encryptionKey) {
+      if (response.status === 404) {
+        // Если заметка не найдена, устанавливаем предупреждение
+        setWarning('Note not found or already read');
+      } else if (response.ok) {
+        const data = await response.json();
         const decryptedText = decryptText(data.text, encryptionKey);
         setNoteText(DOMPurify.sanitize(decryptedText));
-      } else {
-        setNoteText('Decryption key is required.');
       }
-    } catch {
-      setNoteText('Error fetching note.');
+    } catch (err) {
+      // Здесь можно оставить пустым, если не нужно показывать ошибку
     } finally {
       setIsLoading(false);
     }
@@ -44,21 +41,18 @@ function ViewNote({ noteId, encryptionKey }) {
     }
   }, [noteText]);
 
-  const isError = noteText === 'Note not found or already read';
-
   if (isLoading) {
     return <div className="loading">Loading...</div>;
   }
 
   return (
     <div className="view-note">
-      <h2 className={isError ? 'warning' : ''}>
-        {isError ? 'WARNING' : 'Secure Note'}
-      </h2>
-      <div className={`note-content ${isError ? 'error-message' : ''}`}>
-        {noteText}
+      {warning && <h2 className="warning">{warning}</h2>} {/* Показываем только предупреждение */}
+      {!warning && <h2 className="secure-note">Secure Note</h2>}
+      <div className={`note-content ${warning ? 'error-message' : ''}`}>
+        {warning ? '' : noteText} {/* Если есть предупреждение, не показываем текст заметки */}
       </div>
-      {!isError && (
+      {!warning && (
         <div className="button-group">
           <button className="button share-button" onClick={copyToClipboard}>
             <FaClipboard /> Copy
