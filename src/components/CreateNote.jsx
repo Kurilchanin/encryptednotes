@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import CryptoJS from 'crypto-js'
 import { v4 as uuidv4 } from 'uuid'
 import { API_URL } from '../config'
@@ -27,42 +27,40 @@ function CreateNote() {
     e.preventDefault()
     setIsLoading(true)
 
-    try {
-      const noteId = uuidv4();
-      const encryptionKey = generateKey();
-      const encryptedText = CryptoJS.AES.encrypt(
-        DOMPurify.sanitize(noteText), 
-        encryptionKey
-      ).toString()
+    const noteId = uuidv4();
+    const encryptionKey = generateKey();
+    const encryptedText = CryptoJS.AES.encrypt(
+      DOMPurify.sanitize(noteText), 
+      encryptionKey
+    ).toString()
 
-      const response = await fetch(`${API_URL}/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          text: encryptedText, 
-          id: noteId 
-        }),
-      })
+    await fetch(`${API_URL}/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        text: encryptedText, 
+        id: noteId 
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
+          setNoteLink(generatedLink);
+          setNoteText('');
+        }
+      });
 
-      const data = await response.json()
-      
-      if (data.success) {
-        const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
-        setNoteLink(generatedLink);
-        setNoteText('');
-      }
-    } catch (error) {
-      console.error('Failed to create note:', error);
-    } finally {
-      setIsLoading(false)
-    }
+    setIsLoading(false);
   }
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(noteLink);
-  };
+  const copyToClipboard = useCallback(() => {
+    if (noteLink) {
+      navigator.clipboard.writeText(noteLink);
+    }
+  }, [noteLink]);
 
   return (
     <div>
@@ -93,17 +91,14 @@ function CreateNote() {
         <div className="button-group">
           <button 
             className="button share-button" 
-            onClick={() => {
-              const copyLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}&image=note.svg`;
-              navigator.clipboard.writeText(copyLink);
-            }}
+            onClick={copyToClipboard}
           >
             <FaClipboard /> Copy
           </button>
           <button 
             className="button share-button" 
             onClick={() => {
-              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}&image=note.svg`;
+              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
               window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
             }}
           >

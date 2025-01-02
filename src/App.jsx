@@ -4,37 +4,29 @@ import ViewNote from './components/ViewNote';
 import './App.css';
 
 function App() {
-  const [hasUrlParams, setHasUrlParams] = useState(false);
-  const [noteId, setNoteId] = useState('');
-  const [encryptionKey, setEncryptionKey] = useState('');
+  const [noteParams, setNoteParams] = useState(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const noteParam = params.get('note');
 
-    console.log('URL Parameters:', noteParam);
-
     if (noteParam) {
       const [id, key] = noteParam.split('_');
-      console.log('Extracted ID:', id, 'Key:', key);
-
       if (id && key) {
-        setNoteId(id);
-        setEncryptionKey(key);
-        setHasUrlParams(true);
+        setNoteParams({ noteId: id, encryptionKey: key });
       } else {
-        setHasUrlParams(false);
+        setNoteParams(null);
       }
     } else {
-      setHasUrlParams(false);
+      setNoteParams(null);
     }
   }, []);
 
   return (
     <div className="app">
       <div className="container">
-        {hasUrlParams ? (
-          <ViewNote noteId={noteId} encryptionKey={encryptionKey} />
+        {noteParams ? (
+          <ViewNote noteId={noteParams.noteId} encryptionKey={noteParams.encryptionKey} />
         ) : (
           <CreateNote />
         )}

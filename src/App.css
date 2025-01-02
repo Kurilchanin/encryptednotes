@@ -142,3 +142,8 @@ h2 {
 .share-button:active svg {
   transform: scale(0.9);
 }
+
+.warning {
+  color: #f1c40f;
+  font-size: 28px;
+}

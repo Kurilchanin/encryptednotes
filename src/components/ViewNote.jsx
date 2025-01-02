@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { decryptText } from '../utils/crypto';
 import { API_URL } from '../config';
 import DOMPurify from 'dompurify';
@@ -8,46 +8,42 @@ function ViewNote({ noteId, encryptionKey }) {
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchNote = async () => {
-      if (!noteId) {
-        setNoteText('Invalid note ID.');
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        console.log('Fetching note with ID:', noteId);
-        const response = await fetch(`${API_URL}/read?note=${noteId}`);
-        const data = await response.json();
-        console.log('Response:', data);
-
-        if (data.error) {
-          setNoteText(data.error);
-        } else if (encryptionKey) {
-          try {
-            const decryptedText = decryptText(data.text, encryptionKey);
-            setNoteText(DOMPurify.sanitize(decryptedText));
-          } catch (error) {
-            setNoteText('Error decrypting note.');
-          }
-        } else {
-          setNoteText('Decryption key is required.');
-        }
-      } catch (error) {
-        setNoteText('Error fetching note.');
-      }
+  const fetchNote = useCallback(async () => {
+    if (!noteId) {
+      setNoteText('Invalid note ID.');
       setIsLoading(false);
-    };
+      return;
+    }
 
-    fetchNote();
+    try {
+      const response = await fetch(`${API_URL}/read?note=${noteId}`);
+      const data = await response.json();
+
+      if (data.error) {
+        setNoteText(data.error);
+      } else if (encryptionKey) {
+        const decryptedText = decryptText(data.text, encryptionKey);
+        setNoteText(DOMPurify.sanitize(decryptedText));
+      } else {
+        setNoteText('Decryption key is required.');
+      }
+    } catch {
+      setNoteText('Error fetching note.');
+    } finally {
+      setIsLoading(false);
+    }
   }, [noteId, encryptionKey]);
 
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(noteText);
-  };
+  useEffect(() => {
+    fetchNote();
+  }, [fetchNote]);
 
-  const currentUrl = window.location.href;
+  const copyToClipboard = useCallback(async () => {
+    if (noteText) {
+      await navigator.clipboard.writeText(noteText);
+    }
+  }, [noteText]);
+
   const isError = noteText === 'Note not found or already read';
 
   if (isLoading) {
@@ -56,7 +52,7 @@ function ViewNote({ noteId, encryptionKey }) {
 
   return (
     <div className="view-note">
-      <h2 style={isError ? { color: '#f1c40f', fontSize: '28px' } : {}}>
+      <h2 className={isError ? 'warning' : ''}>
         {isError ? 'WARNING' : 'Secure Note'}
       </h2>
       <div className={`note-content ${isError ? 'error-message' : ''}`}>
@@ -70,8 +66,8 @@ function ViewNote({ noteId, encryptionKey }) {
           <button 
             className="button share-button" 
             onClick={() => {
-                const message = encodeURIComponent(noteText);
-                window.open(`https://t.me/share/url?url=${message}`, '_blank');
+              const message = encodeURIComponent(noteText);
+              window.open(`https://t.me/share/url?url=${message}`, '_blank');
             }}
           >
             <FaShareAlt /> Share
