@@ -53,12 +53,6 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
       </div>
       {!warning && (
         <div className="button-group">
-          <button 
-            className="button create-button" 
-            onClick={onCreateNewNote}
-          >
-            Create New Note
-          </button>
           <button className="button share-button" onClick={copyToClipboard}>
             <FaClipboard /> Copy
           </button>
@@ -70,6 +64,12 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
             }}
           >
             <FaShareAlt /> Share
+          </button>
+          <button 
+            className="button create-button" 
+            onClick={onCreateNewNote}
+          >
+            Create New Note
           </button>
         </div>
       )}
