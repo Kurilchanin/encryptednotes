@@ -3,13 +3,11 @@ import { decryptText } from '../utils/crypto';
 import { API_URL } from '../config';
 import DOMPurify from 'dompurify';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
-import CreateNoteComponent from './CreateNote';
 
-function ViewNote({ noteId, encryptionKey }) {
+function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [warning, setWarning] = useState('');
-  const [showCreateNote, setShowCreateNote] = useState(false);
 
   const fetchNote = useCallback(async () => {
     setIsLoading(true);
@@ -57,7 +55,7 @@ function ViewNote({ noteId, encryptionKey }) {
         <div className="button-group">
           <button 
             className="button create-button" 
-            onClick={() => setShowCreateNote(true)}
+            onClick={onCreateNewNote}
           >
             Create New Note
           </button>
@@ -75,7 +73,6 @@ function ViewNote({ noteId, encryptionKey }) {
           </button>
         </div>
       )}
-      {showCreateNote && <CreateNoteComponent onClose={() => setShowCreateNote(false)} />}
     </div>
   );
 }

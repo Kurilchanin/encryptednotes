@@ -5,6 +5,7 @@ import './App.css';
 
 function App() {
   const [noteParams, setNoteParams] = useState(null);
+  const [showCreateNote, setShowCreateNote] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -25,10 +26,16 @@ function App() {
   return (
     <div className="app">
       <div className="container">
-        {noteParams ? (
-          <ViewNote noteId={noteParams.noteId} encryptionKey={noteParams.encryptionKey} />
+        {showCreateNote ? (
+          <CreateNote onClose={() => setShowCreateNote(false)} />
+        ) : noteParams ? (
+          <ViewNote 
+            noteId={noteParams.noteId} 
+            encryptionKey={noteParams.encryptionKey} 
+            onCreateNewNote={() => setShowCreateNote(true)}
+          />
         ) : (
-          <CreateNote />
+          <CreateNote onClose={() => setShowCreateNote(false)} />
         )}
       </div>
     </div>
