@@ -1,1 +1,1 @@
-export const API_URL = 'https://encrypted-notes-6bb7.unity-network-research.workers.dev';
+export const API_URL = 'https://onedollarvpn.online:8082';
