@@ -15,13 +15,15 @@ function CreateNote() {
 
   const handleTextChange = (e) => {
     const text = e.target.value;
-    
+  
+    // Регулярное выражение для проверки отдельных символов
     const safePattern = /^[\p{L}\p{N}\s.,!?'"()\-:;]*$/u;
-    
-    if (text.length <= MAX_CHARS && safePattern.test(text)) {
-      setNoteText(text);
+  
+    // Обрезаем текст, оставляя только допустимые символы
+    if (text.length <= MAX_CHARS) {
+      setNoteText(text.split('').filter(char => safePattern.test(char)).join(''));
     }
-  };
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault()
