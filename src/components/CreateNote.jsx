@@ -49,6 +49,7 @@ function CreateNote() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
+          // тут надо добавить .ENV
           const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
           setNoteLink(generatedLink);
           setNoteText('');
@@ -66,6 +67,7 @@ function CreateNote() {
 
   return (
     <div>
+      <div className="notice">The note will be stored for 24 HOURS</div>
       <h2>Create a Secure Note</h2>
       <form onSubmit={handleSubmit} className="note-form">
         <div>
@@ -108,6 +110,10 @@ function CreateNote() {
           </button>
         </div>
       )}
+      {/* <div className='text-div margin-top'>1</div>
+      <div className='text-div margin-top'>2</div>
+      <div className='text-div margin-top'>3</div>
+      <div className='text-div margin-top'>4</div> */}
     </div>
   )
 }
