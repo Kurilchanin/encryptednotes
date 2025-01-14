@@ -110,10 +110,6 @@ function CreateNote() {
           </button>
         </div>
       )}
-      {/* <div className='text-div margin-top'>1</div>
-      <div className='text-div margin-top'>2</div>
-      <div className='text-div margin-top'>3</div>
-      <div className='text-div margin-top'>4</div> */}
     </div>
   )
 }
