@@ -48,6 +48,7 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
   return (
     <div className="view-note">
       {warning && <h2 className="warning">{t('warning')}</h2>}
+      {!warning && <h2 className="secure-note">{t('secure_note')}</h2>}
       <div className={`note-content ${warning ? 'error-message' : ''}`}>
         {warning || noteText}
       </div>

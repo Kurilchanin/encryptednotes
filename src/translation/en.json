@@ -5,7 +5,8 @@
   "note_not_found": "Note not found or already read",
   "warning": "ATTENTION",
   "create_note": "Create",
-  "create_new_note": "Create a new note",
-  "secure_note_title": "Create a secure note",
-  "enter_note_text": "Enter the note text..."
+  "create_new_note": "Create new note",
+  "secure_note_title": "Create a Secure Note",
+  "enter_note_text": "Enter the note text...",
+  "secure_note": "Secure Note"
 }
