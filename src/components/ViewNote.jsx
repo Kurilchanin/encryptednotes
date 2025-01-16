@@ -1,10 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { decryptText } from '../utils/crypto';
 import { API_URL } from '../config';
 import DOMPurify from 'dompurify';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
 
 function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
+  const { t } = useTranslation();
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [warning, setWarning] = useState('');
@@ -17,14 +19,13 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
       const response = await fetch(`${API_URL}/read?note=${noteId}`);
 
       if (response.status === 404) {
-        setWarning('Note not found or already read');
+        setWarning(t('note_not_found'));
       } else if (response.ok) {
         const data = await response.json();
         const decryptedText = decryptText(data.text, encryptionKey);
         setNoteText(DOMPurify.sanitize(decryptedText));
       }
     } catch (err) {
-      // Здесь можно оставить пустым, если не нужно показывать ошибку
     } finally {
       setIsLoading(false);
     }
@@ -46,16 +47,14 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
 
   return (
     <div className="view-note">
-      {warning && <h2 className="warning">WARNING</h2>}
-      {!warning && <h2 className="secure-note">Secure Note</h2>}
+      {warning && <h2 className="warning">{t('warning')}</h2>}
       <div className={`note-content ${warning ? 'error-message' : ''}`}>
-        {warning ? warning : noteText}
+        {warning || noteText}
       </div>
-      {/* Условие для отображения кнопок */}
       {!warning ? (
         <div className="button-group">
           <button className="button share-button" onClick={copyToClipboard}>
-            <FaClipboard /> Copy
+            <FaClipboard /> {t('copy')}
           </button>
           <button 
             className="button share-button" 
@@ -64,17 +63,16 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
               window.open(`https://t.me/share/url?url=${message}`, '_blank');
             }}
           >
-            <FaShareAlt /> Share
+            <FaShareAlt /> {t('share')}
           </button>
         </div>
       ) : null}
-      {/* Кнопка "Create New Note" отображается всегда, если есть предупреждение или заметка */}
       <div className="button-group">
         <button 
           className="button" 
           onClick={onCreateNewNote}
         >
-          Create New Note
+          {t('create_new_note')}
         </button>
       </div>
     </div>

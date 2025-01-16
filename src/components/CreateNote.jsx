@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import CryptoJS from 'crypto-js'
 import { v4 as uuidv4 } from 'uuid'
 import { API_URL } from '../config'
@@ -9,17 +10,14 @@ import { generateKey } from '../utils/crypto'
 const MAX_CHARS = 500;
 
 function CreateNote() {
+  const { t } = useTranslation();
   const [noteText, setNoteText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [noteLink, setNoteLink] = useState('')
 
   const handleTextChange = (e) => {
     const text = e.target.value;
-  
-    // Регулярное выражение для проверки отдельных символов
     const safePattern = /^[\p{L}\p{N}\s.,!?'"()\-:;]*$/u;
-  
-    // Обрезаем текст, оставляя только допустимые символы
     if (text.length <= MAX_CHARS) {
       setNoteText(text.split('').filter(char => safePattern.test(char)).join(''));
     }
@@ -49,7 +47,6 @@ function CreateNote() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          // тут надо добавить .ENV
           const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
           setNoteLink(generatedLink);
           setNoteText('');
@@ -67,15 +64,15 @@ function CreateNote() {
 
   return (
     <div>
-      <div className="notice">The note will be stored for 24 HOURS</div>
-      <h2>Create a Secure Note</h2>
+      <div className="notice">{t('note_stored')}</div>
+      <h2>{t('secure_note_title')}</h2>
       <form onSubmit={handleSubmit} className="note-form">
         <div>
           <textarea
             className="note-input"
             value={noteText}
             onChange={handleTextChange}
-            placeholder="Enter the note text..."
+            placeholder={t('enter_note_text')}
             required
           />
           <div className="char-counter">
@@ -87,7 +84,7 @@ function CreateNote() {
           type="submit" 
           disabled={isLoading || !noteText.trim()}
         >
-          {isLoading ? 'Creating...' : 'Create Note'}
+          {isLoading ? 'Creating...' : t('create_note')}
         </button>
       </form>
       
@@ -97,7 +94,7 @@ function CreateNote() {
             className="button share-button" 
             onClick={copyToClipboard}
           >
-            <FaClipboard /> Copy
+            <FaClipboard /> {t('copy')}
           </button>
           <button 
             className="button share-button" 
@@ -106,7 +103,7 @@ function CreateNote() {
               window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
             }}
           >
-            <FaShareAlt /> Share
+            <FaShareAlt /> {t('share')}
           </button>
         </div>
       )}
