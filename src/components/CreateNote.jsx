@@ -1,13 +1,13 @@
-import { useState, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import CryptoJS from 'crypto-js'
-import { v4 as uuidv4 } from 'uuid'
-import { API_URL } from '../config'
-import { FaClipboard, FaShareAlt } from 'react-icons/fa'
-import DOMPurify from 'dompurify'
-import { generateKey } from '../utils/crypto'
+import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import CryptoJS from 'crypto-js';
+import { v4 as uuidv4 } from 'uuid';
+import { FaClipboard, FaShareAlt } from 'react-icons/fa';
+import DOMPurify from 'dompurify';
+import { generateKey } from '../utils/crypto';
 
 const MAX_CHARS = 500;
+const API_URL = import.meta.env.VITE_API_URL;
 
 function CreateNote() {
   const { t } = useTranslation();
@@ -111,4 +111,4 @@ function CreateNote() {
   )
 }
 
-export default CreateNote
+export default CreateNote;

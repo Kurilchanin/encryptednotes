@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { decryptText } from '../utils/crypto';
-import { API_URL } from '../config';
 import DOMPurify from 'dompurify';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
   const { t } = useTranslation();
