@@ -1,6 +1,5 @@
 import CryptoJS from 'crypto-js';
 
-// Генерация ключа длиной 256 бит (32 байта)
 export const generateKey = () => {
   return CryptoJS.lib.WordArray.random(32).toString();
 }
