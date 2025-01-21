@@ -11,9 +11,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function CreateNote() {
   const { t } = useTranslation();
-  const [noteText, setNoteText] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [noteLink, setNoteLink] = useState('')
+  const [noteText, setNoteText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [noteLink, setNoteLink] = useState('');
 
   const handleTextChange = (e) => {
     const text = e.target.value;
@@ -21,27 +21,27 @@ function CreateNote() {
     if (text.length <= MAX_CHARS) {
       setNoteText(text.split('').filter(char => safePattern.test(char)).join(''));
     }
-  };  
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     const noteId = uuidv4();
     const encryptionKey = generateKey();
     const encryptedText = CryptoJS.AES.encrypt(
-      DOMPurify.sanitize(noteText), 
+      DOMPurify.sanitize(noteText),
       encryptionKey
-    ).toString()
+    ).toString();
 
     await fetch(`${API_URL}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
-        text: encryptedText, 
-        id: noteId 
+      body: JSON.stringify({
+        text: encryptedText,
+        id: noteId
       }),
     })
       .then(response => response.json())
@@ -58,7 +58,12 @@ function CreateNote() {
 
   const copyToClipboard = useCallback(() => {
     if (noteLink) {
-      navigator.clipboard.writeText(noteLink);
+      const textArea = document.createElement('textarea');
+      textArea.value = noteLink;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
     }
   }, [noteLink]);
 
@@ -79,25 +84,25 @@ function CreateNote() {
             {noteText.length}/{MAX_CHARS} characters
           </div>
         </div>
-        <button 
-          className="button" 
-          type="submit" 
+        <button
+          className="button"
+          type="submit"
           disabled={isLoading || !noteText.trim()}
         >
           {isLoading ? 'Creating...' : t('create_note')}
         </button>
       </form>
-      
+
       {noteLink && (
         <div className="button-group">
-          <button 
-            className="button share-button" 
+          <button
+            className="button share-button"
             onClick={copyToClipboard}
           >
             <FaClipboard /> {t('copy')}
           </button>
-          <button 
-            className="button share-button" 
+          <button
+            className="button share-button"
             onClick={() => {
               const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
               window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
@@ -108,7 +113,7 @@ function CreateNote() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default CreateNote;
