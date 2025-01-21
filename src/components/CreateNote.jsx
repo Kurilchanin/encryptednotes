@@ -47,7 +47,7 @@ function CreateNote() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
+          const generatedLink = `${window.location.origin}?note=${noteId}_${encryptionKey}`;
           setNoteLink(generatedLink);
           setNoteText('');
         }
@@ -104,7 +104,7 @@ function CreateNote() {
           <button
             className="button share-button"
             onClick={() => {
-              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
+              const shareLink = `${window.location.origin}?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
               window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
             }}
           >
