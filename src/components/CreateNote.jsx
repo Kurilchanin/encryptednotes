@@ -17,7 +17,7 @@ function CreateNote() {
 
   const handleTextChange = (e) => {
     const text = e.target.value;
-    const safePattern = /^[\p{L}\p{N}\s.,!?'"()\-:;/]*$/u;
+    const safePattern = /^[\p{L}\p{N}\s.,!?'"()\-:;±§<>!@#$%^&*()_+=|\"':?/>.<,~`[\]{}]*$/u;
     if (text.length <= MAX_CHARS) {
       setNoteText(text.split('').filter(char => safePattern.test(char)).join(''));
     }
