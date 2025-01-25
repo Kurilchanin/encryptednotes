@@ -27,6 +27,7 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
         setNoteText(DOMPurify.sanitize(decryptedText));
       }
     } catch (err) {
+      // Error handling removed as per your request
     } finally {
       setIsLoading(false);
     }
@@ -36,9 +37,14 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
     fetchNote();
   }, [fetchNote]);
 
-  const copyToClipboard = useCallback(async () => {
+  const copyToClipboard = useCallback(() => {
     if (noteText) {
-      await navigator.clipboard.writeText(noteText);
+      const textArea = document.createElement('textarea');
+      textArea.value = noteText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
     }
   }, [noteText]);
 
@@ -58,8 +64,8 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
           <button className="button share-button" onClick={copyToClipboard}>
             <FaClipboard /> {t('copy')}
           </button>
-          <button 
-            className="button share-button" 
+          <button
+            className="button share-button"
             onClick={() => {
               const message = encodeURIComponent(noteText);
               window.open(`https://t.me/share/url?url=${message}`, '_blank');
@@ -70,8 +76,8 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
         </div>
       ) : null}
       <div className="button-group">
-        <button 
-          className="button" 
+        <button
+          className="button"
           onClick={onCreateNewNote}
         >
           {t('create_new_note')}
