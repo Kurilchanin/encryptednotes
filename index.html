@@ -28,5 +28,17 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <script>
+      const userLang = navigator.language || navigator.userLanguage; 
+
+      const metaDescription = document.querySelector('meta[property="og:description"]');
+
+      if (userLang.startsWith('ru')) {
+          metaDescription.setAttribute('content', 'Написание зашифрованных записок. Записка хранится на сервере в зашифрованном виде, доступна только по уникальной ссылке и удаляется после первого просмотра или через 24 часа.');
+      } else {
+          metaDescription.setAttribute('content', 'Writing of encrypted notes. The note is stored on the server in encrypted form, accessible only via a unique link, and is deleted after the first view or within 24 hours.');
+      }
+    </script>
   </body>
 </html>
