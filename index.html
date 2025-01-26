@@ -5,7 +5,13 @@
     <link rel="icon" type="image/svg+xml" href="/note.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Encrypted Notes</title>
-    <meta name="description" content="One-time encrypted notes" />
+    <meta name="description" content="Одноразовые зашифрованные записки. Записка хранится на сервере в зашифрованном виде, доступна только по уникальной ссылке и удаляется после первого просмотра или через 24 часа." lang="ru">
+    <meta name="description" content="One-time encrypted notes. The note is stored on the server in encrypted form, accessible only via a unique link, and is deleted after the first view or within 24 hours." lang="en">
+    <meta name="description" content="یادداشت‌های رمزگذاری شده یک‌بار مصرف. یادداشت به صورت رمزگذاری شده در سرور ذخیره می‌شود و فقط از طریق یک لینک منحصر به فرد قابل دسترسی است و پس از اولین مشاهده یا ظرف 24 ساعت حذف می‌شود." lang="fa">
+    <meta name="description" content="ملاحظات مشفرة لمرة واحدة. يتم تخزين الملاحظة على الخادم في شكل مشفر، ويمكن الوصول إليها فقط عبر رابط فريد، ويتم حذفها بعد العرض الأول أو خلال 24 ساعة." lang="ar">
+    <meta name="description" content="Tek kullanımlık şifreli notlar. Not, sunucuda şifreli biçimde saklanır, yalnızca benzersiz bir bağlantı aracılığıyla erişilebilir ve ilk görüntülemeden sonra veya 24 saat içinde silinir." lang="tr">
+    <meta name="description" content="एक बार उपयोग के लिए एन्क्रिप्टेड नोट्स। नोट सर्वर पर एन्क्रिप्टेड रूप में संग्रहीत होता है, केवल एक अद्वितीय लिंक के माध्यम से सुलभ होता है, और पहले दृश्य के बाद या 24 घंटे के भीतर हटा दिया जाता है।" lang="hi">
+    <!-- English description is the default for all other languages -->
     
     <meta property="og:image" content="/NewNote.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -28,17 +34,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
-    <script>
-      const userLang = navigator.language || navigator.userLanguage; 
-
-      const metaDescription = document.querySelector('meta[property="og:description"]');
-
-      if (userLang.startsWith('ru')) {
-          metaDescription.setAttribute('content', 'Написание зашифрованных записок. Записка хранится на сервере в зашифрованном виде, доступна только по уникальной ссылке и удаляется после первого просмотра или через 24 часа.');
-      } else {
-          metaDescription.setAttribute('content', 'Writing of encrypted notes. The note is stored on the server in encrypted form, accessible only via a unique link, and is deleted after the first view or within 24 hours.');
-      }
-    </script>
   </body>
 </html>
