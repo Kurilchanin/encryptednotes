@@ -9,7 +9,7 @@ import { generateKey } from '../utils/crypto';
 const MAX_CHARS = 500;
 const API_URL = import.meta.env.VITE_API_URL;
 
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; // Только цифры и буквы
+const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'; // Только цифры и буквы
 const nanoid = customAlphabet(alphabet, 10);
 
 function CreateNote() {
