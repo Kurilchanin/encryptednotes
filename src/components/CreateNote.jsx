@@ -1,10 +1,9 @@
 import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import CryptoJS from 'crypto-js';
 import { customAlphabet } from 'nanoid';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
 import DOMPurify from 'dompurify';
-import { generateKey } from '../utils/crypto';
+import { generateKey, encryptText } from '../utils/crypto';
 
 const MAX_CHARS = 500;
 const API_URL = import.meta.env.VITE_API_URL;
@@ -32,10 +31,10 @@ function CreateNote() {
 
     const noteId = nanoid();
     const encryptionKey = generateKey();
-    const encryptedText = CryptoJS.AES.encrypt(
+    const encryptedText = encryptText(
       DOMPurify.sanitize(noteText),
       encryptionKey
-    ).toString();
+    );
 
     await fetch(`${API_URL}/create`, {
       method: 'POST',
