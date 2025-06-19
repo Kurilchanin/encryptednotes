@@ -6,7 +6,7 @@
   "warning": "ATTENTION",
   "create_note": "Create",
   "create_new_note": "Create new note",
-  "secure_note_title": "Create a Secure Note",
+  "secure_note_title": "Create a One-Time Note",
   "enter_note_text": "Enter the note text...",
-  "secure_note": "Secure Note"
+  "secure_note": "One-Time Note"
 }

@@ -6,7 +6,7 @@
   "warning": "Dikkat",
   "create_note": "Oluştur",
   "create_new_note": "Yeni not oluştur",
-  "secure_note_title": "Güvenli Not Oluştur",
+  "secure_note_title": "Tek Kullanımlık Not Oluştur",
   "enter_note_text": "Not metnini girin...",
-  "secure_note": "Güvenli Not"
+  "secure_note": "Tek Kullanımlık Not"
 }

@@ -6,7 +6,7 @@
   "warning": "ВНИМАНИЕ",
   "create_note": "Создать",
   "create_new_note": "Создать новую записку",
-  "secure_note_title": "Создать защищенную записку",
+  "secure_note_title": "Создать одноразовую записку",
   "enter_note_text": "Введите текст записки...",
-  "secure_note": "Защищенная записка"
+  "secure_note": "Одноразовая записка"
 }

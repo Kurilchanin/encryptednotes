@@ -6,7 +6,7 @@
   "warning": "注意",
   "create_note": "创建",
   "create_new_note": "创建新便条",
-  "secure_note_title": "创建安全便条",
+  "secure_note_title": "创建一次性便条",
   "enter_note_text": "输入便条文本...",
-  "secure_note": "安全便条"
+  "secure_note": "一次性便条"
 }
