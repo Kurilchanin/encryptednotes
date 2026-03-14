@@ -23,10 +23,11 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
         setWarning(t('note_not_found'));
       } else if (response.ok) {
         const data = await response.json();
-        const decryptedText = decryptText(data.text, encryptionKey);
-        setNoteText(DOMPurify.sanitize(decryptedText));
+        const decrypted = await decryptText(data.text, encryptionKey);
+        setNoteText(DOMPurify.sanitize(decrypted));
       }
     } catch (err) {
+      setWarning(t('note_not_found'));
     } finally {
       setIsLoading(false);
     }
@@ -58,8 +59,8 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
           <button className="button share-button" onClick={copyToClipboard}>
             <FaClipboard /> {t('copy')}
           </button>
-          <button 
-            className="button share-button" 
+          <button
+            className="button share-button"
             onClick={() => {
               const message = encodeURIComponent(noteText);
               window.open(`https://t.me/share/url?url=${message}`, '_blank');
@@ -70,8 +71,8 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
         </div>
       ) : null}
       <div className="button-group">
-        <button 
-          className="button" 
+        <button
+          className="button"
           onClick={onCreateNewNote}
         >
           {t('create_new_note')}

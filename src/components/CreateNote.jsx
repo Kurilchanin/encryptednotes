@@ -1,10 +1,9 @@
 import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import CryptoJS from 'crypto-js';
 import { v4 as uuidv4 } from 'uuid';
 import { FaClipboard, FaShareAlt } from 'react-icons/fa';
 import DOMPurify from 'dompurify';
-import { generateKey } from '../utils/crypto';
+import { generateKey, encryptText } from '../utils/crypto';
 
 const MAX_CHARS = 500;
 const API_URL = import.meta.env.VITE_API_URL;
@@ -21,39 +20,36 @@ function CreateNote() {
     if (text.length <= MAX_CHARS) {
       setNoteText(text.split('').filter(char => safePattern.test(char)).join(''));
     }
-  };  
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
 
-    const noteId = uuidv4();
-    const encryptionKey = generateKey();
-    const encryptedText = CryptoJS.AES.encrypt(
-      DOMPurify.sanitize(noteText), 
-      encryptionKey
-    ).toString()
+    try {
+      const encryptionKey = await generateKey();
+      const encryptedText = await encryptText(
+        DOMPurify.sanitize(noteText),
+        encryptionKey
+      );
 
-    await fetch(`${API_URL}/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        text: encryptedText, 
-        id: noteId 
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          const generatedLink = `https://encryptednotes.vercel.app?note=${noteId}_${encryptionKey}`;
-          setNoteLink(generatedLink);
-          setNoteText('');
-        }
+      const response = await fetch(`${API_URL}/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: encryptedText }),
       });
 
-    setIsLoading(false);
+      const data = await response.json();
+      if (data.success && data.id) {
+        const generatedLink = `https://encryptednotes.vercel.app?note=${data.id}#${encryptionKey}`;
+        setNoteLink(generatedLink);
+        setNoteText('');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const copyToClipboard = useCallback(() => {
@@ -79,28 +75,27 @@ function CreateNote() {
             {noteText.length}/{MAX_CHARS} characters
           </div>
         </div>
-        <button 
-          className="button" 
-          type="submit" 
+        <button
+          className="button"
+          type="submit"
           disabled={isLoading || !noteText.trim()}
         >
           {isLoading ? 'Creating...' : t('create_note')}
         </button>
       </form>
-      
+
       {noteLink && (
         <div className="button-group">
-          <button 
-            className="button share-button" 
+          <button
+            className="button share-button"
             onClick={copyToClipboard}
           >
             <FaClipboard /> {t('copy')}
           </button>
-          <button 
-            className="button share-button" 
+          <button
+            className="button share-button"
             onClick={() => {
-              const shareLink = `https://encryptednotes.vercel.app?note=${encodeURIComponent(noteLink.split('?note=')[1])}`;
-              window.open(`https://t.me/share/url?url=${encodeURIComponent(shareLink)}`, '_blank');
+              window.open(`https://t.me/share/url?url=${encodeURIComponent(noteLink)}`, '_blank');
             }}
           >
             <FaShareAlt /> {t('share')}

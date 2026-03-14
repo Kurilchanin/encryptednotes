@@ -9,15 +9,11 @@ function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const noteParam = params.get('note');
+    const noteId = params.get('note');
+    const encryptionKey = window.location.hash.slice(1);
 
-    if (noteParam) {
-      const [id, key] = noteParam.split('_');
-      if (id && key) {
-        setNoteParams({ noteId: id, encryptionKey: key });
-      } else {
-        setNoteParams(null);
-      }
+    if (noteId && encryptionKey) {
+      setNoteParams({ noteId, encryptionKey });
     } else {
       setNoteParams(null);
     }
@@ -29,9 +25,9 @@ function App() {
         {showCreateNote ? (
           <CreateNote onClose={() => setShowCreateNote(false)} />
         ) : noteParams ? (
-          <ViewNote 
-            noteId={noteParams.noteId} 
-            encryptionKey={noteParams.encryptionKey} 
+          <ViewNote
+            noteId={noteParams.noteId}
+            encryptionKey={noteParams.encryptionKey}
             onCreateNewNote={() => setShowCreateNote(true)}
           />
         ) : (
