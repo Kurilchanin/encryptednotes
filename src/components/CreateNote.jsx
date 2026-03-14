@@ -7,16 +7,9 @@ import { generateKey, encryptText } from '../utils/crypto';
 const MAX_CHARS = 500;
 const API_URL = import.meta.env.VITE_API_URL;
 
-const TTL_OPTIONS = [
-  { value: 300, labelKey: 'ttl_5min' },
-  { value: 3600, labelKey: 'ttl_1hour' },
-  { value: 86400, labelKey: 'ttl_24hours' },
-];
-
 function CreateNote() {
   const { t } = useTranslation();
   const [noteText, setNoteText] = useState('');
-  const [ttl, setTtl] = useState(86400);
   const [isLoading, setIsLoading] = useState(false);
   const [noteLink, setNoteLink] = useState('');
 
@@ -42,7 +35,7 @@ function CreateNote() {
       const response = await fetch(`${API_URL}/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: encryptedText, ttl }),
+        body: JSON.stringify({ text: encryptedText }),
       });
 
       const data = await response.json();
@@ -77,22 +70,6 @@ function CreateNote() {
           />
           <div className="char-counter">
             {noteText.length}/{MAX_CHARS} characters
-          </div>
-        </div>
-
-        <div className="ttl-field">
-          <label className="ttl-label">{t('ttl_label')}</label>
-          <div className="ttl-options">
-            {TTL_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                className={`ttl-button ${ttl === opt.value ? 'ttl-active' : ''}`}
-                onClick={() => setTtl(opt.value)}
-              >
-                {t(opt.labelKey)}
-              </button>
-            ))}
           </div>
         </div>
 
