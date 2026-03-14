@@ -154,3 +154,68 @@ h2 {
   text-align: center;
   margin: 10px 0;
 }
+
+/* TTL selector */
+.ttl-field {
+  margin-top: 5px;
+}
+
+.ttl-label {
+  color: #ccc;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ttl-options {
+  display: flex;
+  gap: 8px;
+}
+
+.ttl-button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #2b2b2b;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.ttl-button:hover {
+  border-color: #2ecc71;
+  color: #fff;
+}
+
+.ttl-active {
+  background: #2ecc71;
+  border-color: #2ecc71;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Auto-destroy timer */
+.auto-destroy-timer {
+  text-align: center;
+  color: #e74c3c;
+  font-size: 14px;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+/* Blurred content */
+.blurred {
+  filter: blur(10px);
+  user-select: none;
+  transition: filter 0.3s;
+}
+
+/* Clipboard message */
+.clipboard-msg {
+  text-align: center;
+  color: #2ecc71;
+  font-size: 13px;
+  margin-top: 10px;
+}

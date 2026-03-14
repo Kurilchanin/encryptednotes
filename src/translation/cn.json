@@ -1,5 +1,5 @@
 {
-  "note_stored": "便条将存储24小时",
+  "note_stored": "便条将存储有限时间",
   "copy": "复制",
   "share": "分享",
   "note_not_found": "未找到便条或已被阅读",
@@ -8,5 +8,14 @@
   "create_new_note": "创建新便条",
   "secure_note_title": "创建安全便条",
   "enter_note_text": "输入便条文本...",
-  "secure_note": "安全便条"
+  "secure_note": "安全便条",
+  "ttl_label": "便条有效期",
+  "ttl_5min": "5分钟",
+  "ttl_1hour": "1小时",
+  "ttl_24hours": "24小时",
+  "auto_destroy_in": "文本将在{{seconds}}秒后消失",
+  "note_destroyed": "便条已销毁",
+  "note_auto_destroyed": "文本已从浏览器内存中自动删除",
+  "clipboard_copied": "已复制！剪贴板将在30秒后清除",
+  "clipboard_cleared": "剪贴板已清除"
 }

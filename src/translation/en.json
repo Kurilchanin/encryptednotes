@@ -1,5 +1,5 @@
 {
-  "note_stored": "The note will be stored for 24 HOURS",
+  "note_stored": "The note will be stored for a limited time",
   "copy": "Copy",
   "share": "Share",
   "note_not_found": "Note not found or already read",
@@ -8,5 +8,14 @@
   "create_new_note": "Create new note",
   "secure_note_title": "Create a Secure Note",
   "enter_note_text": "Enter the note text...",
-  "secure_note": "Secure Note"
+  "secure_note": "Secure Note",
+  "ttl_label": "Note lifetime",
+  "ttl_5min": "5 min",
+  "ttl_1hour": "1 hour",
+  "ttl_24hours": "24 hours",
+  "auto_destroy_in": "Text will disappear in {{seconds}}s",
+  "note_destroyed": "NOTE DESTROYED",
+  "note_auto_destroyed": "Text was automatically removed from browser memory",
+  "clipboard_copied": "Copied! Clipboard will clear in 30s",
+  "clipboard_cleared": "Clipboard cleared"
 }

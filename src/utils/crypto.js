@@ -12,11 +12,11 @@ export const generateKey = async () => {
 };
 
 export const encryptText = async (text, keyHex) => {
-  const key = await importKey(keyHex);
+  const aesKey = await importKey(keyHex);
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const ciphertext = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
-    key,
+    aesKey,
     encoder.encode(text)
   );
   const combined = new Uint8Array(iv.length + ciphertext.byteLength);
@@ -26,13 +26,13 @@ export const encryptText = async (text, keyHex) => {
 };
 
 export const decryptText = async (base64, keyHex) => {
-  const key = await importKey(keyHex);
+  const aesKey = await importKey(keyHex);
   const combined = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
   const iv = combined.slice(0, 12);
   const ciphertext = combined.slice(12);
   const plaintext = await crypto.subtle.decrypt(
     { name: 'AES-GCM', iv },
-    key,
+    aesKey,
     ciphertext
   );
   return decoder.decode(plaintext);
