@@ -47,7 +47,7 @@ function CreateNote() {
 
       const data = await response.json();
       if (data.success && data.id) {
-        const generatedLink = `https://encryptednotes.vercel.app?note=${data.id}#${encryptionKey}`;
+        const generatedLink = `https://encryptednotes-ecru.vercel.app?note=${data.id}#${encryptionKey}`;
         setNoteLink(generatedLink);
         setNoteText('');
       }
