@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FaGithub } from 'react-icons/fa';
 import CreateNote from './components/CreateNote';
 import ViewNote from './components/ViewNote';
 import './App.css';
@@ -34,6 +35,16 @@ function App() {
           <CreateNote onClose={() => setShowCreateNote(false)} />
         )}
       </div>
+      <a
+        className="github-link"
+        href="https://github.com/Kurilchanin/encryptednotes"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub repository"
+        title="GitHub"
+      >
+        <FaGithub />
+      </a>
     </div>
   );
 }
