@@ -4,7 +4,7 @@ import { FaClipboard, FaShareAlt } from 'react-icons/fa';
 import DOMPurify from 'dompurify';
 import { generateKey, encryptText } from '../utils/crypto';
 
-const MAX_CHARS = 500;
+const MAX_CHARS = 1000;
 const API_URL = import.meta.env.VITE_API_URL;
 
 function CreateNote() {
