@@ -14,6 +14,7 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
   const [warning, setWarning] = useState('');
   const [isBlurred, setIsBlurred] = useState(false);
   const [clipboardMsg, setClipboardMsg] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
 
   const fetchNote = useCallback(async () => {
     setIsLoading(true);
@@ -60,6 +61,8 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
     if (noteText) {
       await navigator.clipboard.writeText(noteText);
       setClipboardMsg(t('clipboard_copied'));
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
 
       setTimeout(async () => {
         try {
@@ -89,7 +92,7 @@ function ViewNote({ noteId, encryptionKey, onCreateNewNote }) {
       {!warning ? (
         <div className="button-group">
           <button className="button share-button" onClick={copyToClipboard}>
-            <FaClipboard /> {t('copy')}
+            <FaClipboard /> {isCopied ? t('copied') : t('copy')}
           </button>
           <button
             className="button share-button"

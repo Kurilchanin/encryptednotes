@@ -12,6 +12,7 @@ function CreateNote() {
   const [noteText, setNoteText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [noteLink, setNoteLink] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleTextChange = (e) => {
     const text = e.target.value;
@@ -52,6 +53,8 @@ function CreateNote() {
   const copyToClipboard = useCallback(() => {
     if (noteLink) {
       navigator.clipboard.writeText(noteLink);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     }
   }, [noteLink]);
 
@@ -85,7 +88,7 @@ function CreateNote() {
       {noteLink && (
         <div className="button-group">
           <button className="button share-button" onClick={copyToClipboard}>
-            <FaClipboard /> {t('copy')}
+            <FaClipboard /> {isCopied ? t('copied') : t('copy')}
           </button>
           <button
             className="button share-button"
